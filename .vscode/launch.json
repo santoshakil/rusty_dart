@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "program": "${workspaceFolder}/bin/main.dart",
+      "showMemoryUsage": true,
+      "request": "launch",
+      "name": "RustyDart",
+      "type": "dart",
+      "args": []
+    }
+  ]
+}
