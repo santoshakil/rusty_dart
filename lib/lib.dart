@@ -1,1 +1,1 @@
-void calculate() {}
+void execRust() {}

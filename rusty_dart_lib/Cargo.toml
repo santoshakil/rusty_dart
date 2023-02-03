@@ -1,0 +1,7 @@
+[package]
+name = "rusty_dart_lib"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+flutter_rust_bridge = "1.61.1"
