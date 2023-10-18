@@ -1,5 +1,5 @@
-import 'package:rusty_dart/rusty_dart.dart' as rusty_dart;
+import 'package:rusty_dart/rusty_dart.dart';
 
 void main(List<String> arguments) {
-  print('Hello world: ${rusty_dart.calculate()}!');
+  rustyDart();
 }
