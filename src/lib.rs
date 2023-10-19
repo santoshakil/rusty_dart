@@ -17,7 +17,6 @@ pub extern "C" fn get() -> *const c_char {
         .map(|(k, v)| format!("{}: {}", k, v))
         .collect::<Vec<_>>()
         .join("\n");
-    println!("Rust: {}", data.clone());
     let data = CString::new(data).unwrap();
     data.into_raw()
 }
@@ -26,5 +25,6 @@ pub extern "C" fn get() -> *const c_char {
 pub extern "C" fn set(key: *const c_char, value: *const c_char) {
     let key = unsafe { CStr::from_ptr(key).to_string_lossy().into_owned() };
     let value = unsafe { CStr::from_ptr(value).to_string_lossy().into_owned() };
-    MAP.write().unwrap().insert(key, value);
+    MAP.write().unwrap().insert(key.clone(), value.clone());
+    println!("Rust Set: {} - {}", key, value);
 }

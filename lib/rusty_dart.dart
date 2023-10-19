@@ -18,7 +18,7 @@ void rustyDart() async {
   setData(key, value);
   calloc.free(key);
   calloc.free(value);
-  print("Dart: ${getData().toDartString()}");
+  print("Dart: \n${getData().toDartString()}\n");
 
   await Isolate.spawn(
     (_) {
@@ -30,13 +30,11 @@ void rustyDart() async {
       setData(key, value);
       calloc.free(key);
       calloc.free(value);
-      print("Dart Isolate: ${getData().toDartString()}");
+      print("Dart Isolate: \n${getData().toDartString()}");
     },
     null,
   );
 
-  while (true) {
-    await Future.delayed(Duration(seconds: 1));
-    print("Dart: ${getData().toDartString()}");
-  }
+  await Future.delayed(Duration(seconds: 1));
+  print("\nDart: \n${getData().toDartString()}");
 }
