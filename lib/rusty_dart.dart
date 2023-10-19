@@ -3,22 +3,39 @@ import 'dart:isolate';
 
 import 'package:ffi/ffi.dart';
 
+const path = 'target/release/librusty_dart.dylib';
+
 void rustyDart() async {
-  final dlib = DynamicLibrary.open('target/release/librusty_dart.dylib');
-  final init = dlib.lookupFunction<Void Function(), void Function()>('init');
+  final dlib = DynamicLibrary.open(path);
   final getData = dlib.lookupFunction<Pointer<Utf8> Function(), Pointer<Utf8> Function()>('get');
-  init();
+  final setData = dlib
+      .lookupFunction<Void Function(Pointer<Utf8>, Pointer<Utf8>), void Function(Pointer<Utf8>, Pointer<Utf8>)>('set');
+  final key = 'key'.toNativeUtf8();
+  final value = 'value'.toNativeUtf8();
+  setData(key, value);
+  calloc.free(key);
+  calloc.free(value);
+  print("Dart: ${getData().toDartString()}");
 
   await Isolate.spawn(
-    (getData) {
-      final data = getData();
-      final str = data.toDartString();
-      print(str);
+    (_) {
+      final dlib = DynamicLibrary.open(path);
+      final getData = dlib.lookupFunction<Pointer<Utf8> Function(), Pointer<Utf8> Function()>('get');
+      final setData =
+          dlib.lookupFunction<Void Function(Pointer<Utf8>, Pointer<Utf8>), void Function(Pointer<Utf8>, Pointer<Utf8>)>(
+              'set');
+      final key = 'key2'.toNativeUtf8();
+      final value = 'value2'.toNativeUtf8();
+      setData(key, value);
+      calloc.free(key);
+      calloc.free(value);
+      print("Dart Isolate: ${getData().toDartString()}");
     },
-    getData,
+    null,
   );
 
   while (true) {
     await Future.delayed(Duration(seconds: 1));
+    print("Dart: ${getData().toDartString()}");
   }
 }
